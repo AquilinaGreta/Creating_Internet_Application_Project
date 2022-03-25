@@ -68,7 +68,6 @@ if (isset($_POST['enter'])){
     $jobType = $_POST['jobType'];
     $location = $_POST['location'];
 
-    //MANCANTE: da inserire la company creation 
     $company_ID = $_SESSION['UserID']; 
     $dateJobAdv = date("d-m-Y");
     
@@ -77,9 +76,33 @@ if (isset($_POST['enter'])){
     ('$title', ' $description', '$dateJobAdv', '$company_ID', '$jobType', '$location' )
     ";
 
-    if (!$result = mysqli_query($mysqliConnection, $sql)) {
-        print(mysqli_error($mysqliConnection));
-    exit();
+    if (mysqli_query($mysqliConnection, $sql)) {
+
+        $postID = mysqli_insert_id($mysqliConnection);
+
+    }
+
+    $sql2 = "SELECT *
+    FROM $db_tab_tag
+    WHERE tagName = '$tag'
+    ";
+
+    $result2 = mysqli_query($mysqliConnection,$sql2);
+    $rowcount2 = mysqli_num_rows($result2);
+                
+    if($rowcount2>0){
+
+        $row2 = mysqli_fetch_array($result2);
+        $tagID = $row2['tagID'];
+        
+        $sql3 = "INSERT INTO $db_tab_association (postID, tagID, type_content) 
+        VALUES 
+        ('$postID', '$tagID', 1)
+        ";
+        
+        $result3 = mysqli_query($mysqliConnection,$sql3);
+        //$rowcount3 = mysqli_num_rows($result3);
+
     }
 	
 }

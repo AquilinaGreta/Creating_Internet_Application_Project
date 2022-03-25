@@ -1,6 +1,4 @@
-<!DOCTYPE html
-PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
     
@@ -130,7 +128,8 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
             $sqlQuery6 = "CREATE TABLE if not exists $db_tab_association (
                 associationID int NOT NULL auto_increment, primary key(associationID),
                 postID int NOT NULL,
-                tagID int NOT NULL
+                tagID int NOT NULL,
+                type_content int NOT NULL
                 )";
 
             if($result = mysqli_query($mysqliConnection, $sqlQuery6))
