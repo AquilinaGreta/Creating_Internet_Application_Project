@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 
 <head>
-    <title>Visualize User's profile</title>
+    <title>Visualize Creator's profile</title>
     </head>
     
     <body >
@@ -123,7 +123,7 @@
                                                 $tagName = $row4['tagName'];
 
                                                 echo"<div class='card'>
-                                                <h3class='tag'>$tagName</h3>
+                                                <h3 class='tag'>$tagName</h3>
                                                     </div>";
                                         
                                         }
@@ -192,7 +192,7 @@
                                         <h3 class='locationJob'>Job location: $locationJob</h3>
                                     </div>";
 
-                                //extract the tagID of the current jobAdv
+                                /*//extract the tagID of the current jobAdv
                                 $sql3 = "SELECT *
                                 FROM $db_tab_association
                                 WHERE $db_tab_association.postID = $jobAdv_ID
@@ -230,7 +230,7 @@
                                         }
                                     }
                                 }
-                            }
+                            }*/
                         
                         }
                     }

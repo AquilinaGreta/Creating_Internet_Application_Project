@@ -56,7 +56,7 @@
                                 <h3 class='locationJob'>Job location: $locationJob</h3>
                             </div>";
 
-                            //extract the tagID of the current jobAdv
+                            /*//extract the tagID of the current jobAdv
                             $sql2 = "SELECT *
                             FROM $db_tab_association
                             WHERE $db_tab_association.postID = \"{$_GET['jobAdv_ID']}\"
@@ -93,7 +93,7 @@
                                     }
                                 }
                             }
-                        }
+                        }*/
 
                     }
                 }
@@ -139,9 +139,9 @@
                             $jobAdvID = $_GET['jobAdv_ID'];
                             $dateApplication = date("Y-m-d");
                            
-                            $sql6 = "INSERT INTO $db_tab_application (creatorID, job_advID, date, viewed, response, notification)
+                            $sql6 = "INSERT INTO $db_tab_application (creatorID, job_advID, date, viewed, response, notification_viewed, notification_response, notification_checked)
                             VALUES
-                            ('$creatorID', ' $jobAdvID', '$dateApplication', '0', '0', '0')
+                            ('$creatorID', ' $jobAdvID', '$dateApplication', '0', '0', '0', '0', '0')
                             ";
     
                             $result6 = mysqli_query($mysqliConnection,$sql6);

@@ -107,10 +107,10 @@
             <div>
                 <label for="jobFigure"><b>Select the main job figure</b></label>
                 <select name="jobFigure" id="jobFigure">
-                    <option value="artist">Artist</option>
-                    <option value="2D-modeler">2D-modeler</option>
-                    <option value="3D-modeler">3D-modeler</option>
-                    <option value="artistModeler">Artist and Modeler</option>
+                    <option value="#artist">#Artist</option>
+                    <option value="#2D-modeler">#2D-modeler</option>
+                    <option value="#3D-modeler">#3D-modeler</option>
+                    <option value="#artistModeler">#Artist and Modeler</option>
                 </select>
                 
             </div>
