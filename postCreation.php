@@ -11,7 +11,7 @@
 <body>
    
         <form action="<?php $_SERVER['PHP_SELF']?>" method="post" enctype="multipart/form-data">
-        <h1>Creazione post</h1>
+        <h1>Post a Creation</h1>
 
         <div>
             <label for="Title"><b>Title</b></label>
