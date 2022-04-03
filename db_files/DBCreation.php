@@ -157,8 +157,10 @@
                 job_advID int NOT NULL,
                 date DATE NOT NULL,
                 viewed bool NOT NULL,
-                response bool NOT NULL,
-                notification bool NOT NULL
+                response int NOT NULL,
+                notification_viewed bool NOT NULL,
+                notification_response int NOT NULL,
+                notification_checked bool NOT NULL
                 )";
 
             if($result = mysqli_query($mysqliConnection, $sqlQuery8))
