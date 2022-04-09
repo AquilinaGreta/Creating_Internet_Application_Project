@@ -3,15 +3,70 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Visualize creator's portfolio</title>
     </head>
+    <?php  
+        include("./db_files/connection.php");
+        include("./base_header.php");
+    ?>
     
     <body>
+    <main id="main" class="main">
 
+        <div class="pagetitle">
+            <h1>Visualize creator's portfolio</h1>
+        </div>
+        <aside id="sidebar" class="sidebar">
+                <ul class="sidebar-nav" id="sidebar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="./homepage.php">
+                        <i class="bi bi-grid"></i>
+                        <span>Homepage</span>
+                        </a>
+                    </li>
+                    <?php 
+                    if(isset($_SESSION['type_User'])){    
+                    if($_SESSION['type_User'] == 0){
+                       echo"<li class='nav-item'>
+                                <a class='nav-link collapsed' href='./postCreation.php'>
+                                <i class='bi bi-menu-button-wide'></i>
+                                <span>Post a new Creation</span>
+                                </a>
+                            </li>
+                            <li class='nav-item'>
+                                <a class='nav-link collapsed' href='./visualizeApplianceToJob.php'>
+                                <i class='bi bi-menu-button-wide'></i>
+                                <span>Visualize Appliance to Job Adv.</span>
+                                </a>
+                            </li>";
+                        }
+                    }
+                    ?>
+                    <?php 
+                    if(isset($_SESSION['type_User'])){ 
+                    if($_SESSION['type_User'] == 1){
+                        echo"<li class='nav-item'>
+                                <a class='nav-link collapsed' href='./postJobAdv.php'>
+                                <i class='bi bi-menu-button-wide'></i>
+                                <span>Post a new Job Advertisement</span>
+                                </a>
+                            </li>";
+                        } 
+                    }
+                    ?>
+                </ul>
+            </aside>
+    <section class="section profile"> 
+        <div class="row">
+            <div class="col-xl-4">
+                <div class="card">
+                    <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
     <?php
-        include("./db_files/connection.php");
+        //include("./db_files/connection.php");
 
-        session_start();
+        //session_start();
         if(isset($_GET['creatorID'])){
 
             $application_ID = $_GET['applicationID'];
@@ -39,16 +94,35 @@
                         $usernameCreator = $row['username'];
                         $jobFigure = $row['jobFigure'];
                         $tools = $row['tools'];
+                        $email = $row['email'];
 
                         echo" 
-                            <h2>Username: $usernameCreator</h2>
-                            <h3>Name: $nameCreator</h3>
-                            <h3>JobFigure: $jobFigure</h3>
-                            <h3>Tool: $tools </h3>
+                            <h2>$usernameCreator</h2>
+                            <div class='tab-content pt-2'>
+                                <div class='tab-pane fade show active profile-overview' id='profile-overview'>
+                                    <h3>Email: $email</h3>
+                                    <h3>Job Figure: $jobFigure</h3>
+                                    <h3>Tools: $tools</h3>
+                                </div>
+                            </div>
                             "; 
 
                     }
                 }
+                ?>
+                <div class="social-links mt-2">
+                    <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
+                    <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-8">
+        <h1>Portfolio</h1>
+        <?php 
                 
             //extract creator's portfolio with its creations
             $sql2 = "SELECT *
@@ -59,7 +133,7 @@
 
             $result2 = mysqli_query($mysqliConnection,$sql2);
             $rowcount2=mysqli_num_rows($result2);
-
+                
                 if($rowcount2>0){
             
                     while($row2 = mysqli_fetch_array($result2)) {
@@ -70,26 +144,20 @@
                         $dateDMY = strtotime( $date );
                         $dateDMY = date( 'd-m-Y', $dateDMY );
                         $Creation_ID = $row2['postID'];
-
+                        
                         $external_host_link = mysqli_real_escape_string($mysqliConnection, urldecode($row2['external_host_link']));
 
-                        echo"<div class='card'>
-                                <h1 class='title'>$title</h1>
-                                <h3 class='date'>$dateDMY</h3>
-                                <h3 class='description'>$description</h3>
-                                <img class='creaIMG' src='".$external_host_link."' height='780' width='680'>
-                            </div>";
-
+                        
                         //extract the tagID of the current creation
                         $sql3 = "SELECT *
                         FROM $db_tab_association
-                        WHERE $db_tab_association.postID = $Creation_ID
-                        AND $db_tab_association.type_content = 0
+                        WHERE postID = $Creation_ID
+                        AND type_content = 0
                         ";
 
                         $result3 = mysqli_query($mysqliConnection,$sql3);
                         $rowcount3=mysqli_num_rows($result3);
-
+                        
                         if($rowcount3>0){
                     
                             while($row3 = mysqli_fetch_array($result3)) {
@@ -110,19 +178,27 @@
 
                                     while($row4 = mysqli_fetch_array($result4)) {
                                         $tagName = $row4['tagName'];
-
-                                        echo"<div class='card'>
-                                        <h3class='tag'>$tagName</h3>
-                                            </div>";
                                 
                                 }
                             }
                         }
                     }
+                    echo"<div class='card'>
+                            <img class='card-img-bottom' alt='...' src='".$external_host_link."'>
+                                <div class='card-body'>
+                                    <h5 class='card-title'>$title</h5>
+                                    <h6 class='card-text'>Published: $dateDMY</h6>
+                                    <h6 class='card-text'>Description: $description</h6>
+                                    <h6 class='card-text'>Tag: $tagName</h6>
+                                </div>
+                        </div>";
                 }
             }
         }        
     ?>
-
+    </div>
+    </div>
+    </section>
+</main>
 </body>
 </html>

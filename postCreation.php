@@ -5,90 +5,87 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Post creation</title>
+    <?php include("./base_header.php"); ?>
+        <main id="main" class="main">
 </head>
+<div class="col-lg-6">
+   <div class="card mb-3">
+       <div class="card-body">
+            <h3 class="card-title">Post your creation</h3>
+                <form action="<?php $_SERVER['PHP_SELF']?>" method="post" enctype="multipart/form-data">
 
-<body>
-   
-        <form action="<?php $_SERVER['PHP_SELF']?>" method="post" enctype="multipart/form-data">
-        <h1>Post a Creation</h1>
+                <div class="row mb-3">
+                    <label for="inputText" class="col-sm-2 col-form-label">Title</label>
+                    <input type="text" placeholder="Insert title" class="form-control" name="title" required>
+                </div>
 
-        <div>
-            <label for="Title"><b>Title</b></label>
-            <br>
-            <input type="text" placeholder="Insert title" name="title" required>
-        </div>
+            
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label" for="tag">Tag</label>
+                   
 
-    
-        <div>
-            <label for="tag"><b>Tag</b></label>
-            <br>
+                    <?php
 
-            <?php
+                        include("./db_files/connection.php");
 
-                include("./db_files/connection.php");
+                        $tag_list=array();
 
-                $tag_list=array();
+                        $sql = "SELECT *
+                        FROM $db_tab_tag
+                        ";
 
-                $sql = "SELECT *
-                FROM $db_tab_tag
-                ";
+                        if (!$result = mysqli_query($mysqliConnection, $sql)) {
+                            printf("Error in query execution\n");
+                        exit();
+                        }
 
-                if (!$result = mysqli_query($mysqliConnection, $sql)) {
-                    printf("Error in query execution\n");
-                exit();
-                }
+                        while( $row = mysqli_fetch_array($result) ) {
+                        
+                        $tagName = $row['tagName'];
+                        array_push($tag_list,$tagName);}
 
-                while( $row = mysqli_fetch_array($result) ) {
+                        echo"
+                            <select class=\"form-select\" name=\"tag\">";
+                                foreach($tag_list as $tag):
+                                echo '<option value="'.$tag.'">'.$tag.'</option>';
+                                endforeach;
+                            echo"</select>";    
+                        ?>
+                </div>
+
+
+                <div class="row mb-3">
+                    <label class="col-sm-4 col-form-label" for="description">Description</label>
+                    <textarea class="form-control" type="text" height="100px" name="description" required></textarea>
+                </div>
+
+                <div class="row mb-3">
+                <label for="basic-url" class="form-label">Image URL</label>
                 
-                $tagName = $row['tagName'];
-                array_push($tag_list,$tagName);}
+                <div class="input-group mb-3">
+                    
+                    <span class="input-group-text" id="basic-addon3">Imgur Link</span>
+                    <input class="form-control" id="basic-url" type="text" name="link" required>
+                </div>
+                </div>
 
-                echo"<div class='box'>
-                    <select name=\"tag\">";
-                        foreach($tag_list as $tag):
-                        echo '<option value="'.$tag.'">'.$tag.'</option>';
-                        endforeach;
-                    echo"</select>
-                        </div>";    
-                ?>
+                <div class="row mb-3">
+                  <div class="col-sm-10">
+                    <button type="submit" class="btn btn-primary" name="enter">Create Post</button>
+                    <button class="btn btn-primary" type="reset">Reset</button>
+                  </div>
+                </div>
+
+                </form>
         </div>
-
-
-        <div>
-            <label for="description"><b>Description</b></label>
-            <br>
-            <textarea type="text" rows="9" cols="70" name="description" required></textarea>
-        </div>
-
-        <div>
-            <label for="link"><b>Link to image</b></label>
-            <br>
-            <textarea type="text" rows="2" cols="70" name="link" required></textarea>
-        </div>
-
-        <div>
-            <button type="submit" name="enter">Create</button>
-            <button type="reset">Reset</button>
-            <button onclick="goBack()">Go back</button>
-        </div>
-
-        </form>
-
-    <script>
-        function goBack() {
-        window.history.back();
-        }
-    </script>
-</body>
+    </div>
+</div>
 
 </html>
 
 <?php
 
     include("./db_files/connection.php");
-
-    session_start();
 
     if (isset($_POST['enter'])){
 
@@ -99,7 +96,8 @@
         $Creator_ID = $_SESSION['UserID']; 
         $dateCreation = date("Y-m-d");
         $portFolio_ID = $Creator_ID;
-        $external_host_link = mysqli_real_escape_string($mysqliConnection, urlencode($_POST['link']));
+        $concat_Link = $_POST['link'];
+        $external_host_link = mysqli_real_escape_string($mysqliConnection, urlencode($concat_Link));
 
         $sql = "INSERT INTO $db_tab_creations (title, description, date, portfolio_ID, external_host_link)
         VALUES
@@ -133,6 +131,10 @@
             $result3 = mysqli_query($mysqliConnection,$sql3);
 
         }
-        
+        echo"<script >
+            window.location.href=(\"./homepage.php\");
+            </script>";
     }
 ?>
+</main>
+</body>

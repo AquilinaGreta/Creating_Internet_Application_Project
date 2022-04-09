@@ -2,12 +2,37 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
     
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Content Creator sign up</title> 
-        </head>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Content Creator sign up</title> 
+
+        <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/dropdowns/">
+        <!-- Favicons -->
+        <link href="assets/img/favicon.png" rel="icon">
+        <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+        <!-- Google Fonts -->
+        <link href="https://fonts.gstatic.com" rel="preconnect">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+        <!-- Vendor CSS Files -->
+        <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+        <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+        <link href="assets/vendor/quill/quill.snow.css" rel="stylesheet">
+        <link href="assets/vendor/quill/quill.bubble.css" rel="stylesheet">
+        <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+        <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet">
+
+        <!-- Template Main CSS File -->
+        <link href="assets/css/style.css" rel="stylesheet">
+        <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
+    </head>
+
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
         function goBack() {
         window.history.back();
@@ -78,59 +103,81 @@
     </script>
     
     <body>
+        
+        <main>
+            <div class="container">
 
-        <form method="post">
-            <h1>Sign Up</h1>
-            <p>Please fill the fields</p>
-            
-            <div>
-                <label for="name"><b>Name</b></label>
-                <input type="text" placeholder="Insert name" name="name" required>
-            </div>
-            <div id="email_div">
-                <label for="email"><b>Email</b></label>
-                <input type="email" id="email" placeholder="Insert email" name="email" onchange="checkEmail(this.value);" required>
-            </div>
+            <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
 
-            <div id="username_div">
-                <label for="username"><b>Username</b></label>
-                <input type="text" id="username"placeholder="Insert username" name="username" onchange="checkUsername(this.value);"required>
-            </div>
+              <div class="d-flex justify-content-center py-4">
+                <a href="index.html" class="logo d-flex align-items-center w-auto">
+                  <span class="d-none d-lg-block">ArtFolio</span>
+                </a>
+              </div><!-- End Logo -->
 
-            <div>
-                <label for="psw"><b>Password</b></label>
-                <input id = "password" type="password" placeholder="Insert password" name="psw" required>
-                <!-- An element to toggle between password visibility -->
-                <input type="checkbox" onclick="password_Visibility()">Show Password
-            </div>
+              <div class="card mb-3">
 
-            <div>
-                <label for="jobFigure"><b>Select the main job figure</b></label>
-                <select name="jobFigure" id="jobFigure">
-                    <option value="#artist">#Artist</option>
-                    <option value="#2D-modeler">#2D-modeler</option>
-                    <option value="#3D-modeler">#3D-modeler</option>
-                    <option value="#artistModeler">#Artist and Modeler</option>
-                </select>
-                
-            </div>
+                <div class="card-body">
 
-            <div>
-                <label for="tools"><b>Select the prefered tool</b></label>
-                <select name="tools" id="tools">
-                    <option value="photoshop">Photoshop</option>
-                    <option value="ClipStudioPaint">Clip studio paint</option>
-                    <option value="zBrush">zBrush</option>
-                    <option value="Maya">Maya</option>
-                </select>
-            </div>
-            
-            <div>
-                <button type="submit" name="enter" id="enter_Button">Sign Up</button>
-                <button type="reset" >Cancel</button>
-                <button onclick="goBack()">Go back</button>
-            </div>
-        </form>
+                  <div class="pt-4 pb-2">
+                    <h5 class="card-title text-center pb-0 fs-4">Create a Content Creator Account</h5>
+                    <p class="text-center small">Enter your personal details to create account</p>
+                  </div>
+
+                <form method="post" >
+                    
+                    <div class="col-12">
+                        <label for="name" class="form-label"><b>Your Name</b></label>
+                        <input type="text" class="form-control" placeholder="Insert name" name="name" required>
+                    </div>
+
+                    <div class="col-12" id="email_div">
+                        <label for="email"  class="form-label"><b>Your Email</b></label>
+                        <input type="email" class="form-control" id="email" placeholder="Insert email" name="email" onchange="checkEmail(this.value);" required>
+                    </div>
+
+                    <div class="col-12" id="username_div">
+                        <label for="username" class="form-label"><b>Username</b></label>
+                        <input type="text" class="form-control" id="username"placeholder="Insert username" name="username" onchange="checkUsername(this.value);"required>
+                    </div>
+
+                    <div class="col-12">
+                        <label for="psw" class="form-label"><b>Password</b></label>
+                        <input id = "password" class="form-control" type="password" placeholder="Insert password" name="psw" required>
+                        <!-- An element to toggle between password visibility -->
+                        <input class="form-check-input" type="checkbox" onclick="password_Visibility()"> Show Password
+                    </div>
+
+                    <div>
+                        <label for="jobFigure"><b>Select the main job figure</b></label>
+                        <select class="form-select" name="jobFigure" id="jobFigure">
+                            <option value="#artist">#artist</option>
+                            <option value="#2D-modeler">#2D-modeler</option>
+                            <option value="#3D-modeler">#3D-modeler</option>
+                           <!-- <option value="#artistModeler">#artist and modeler</option> -->
+                        </select>
+                        
+                    </div>
+
+                    <div>
+                        <label for="tools"><b>Select the prefered tool</b></label>
+                        <select class="form-select" name="tools" id="tools">
+                            <option value="photoshop">Photoshop</option>
+                            <option value="ClipStudioPaint">Clip studio paint</option>
+                            <option value="zBrush">zBrush</option>
+                            <option value="Maya">Maya</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <button type="submit" class="btn btn-primary w-100" name="enter" id="enter_Button">Create Account</button>
+                        <div class="col-12">
+                      <p class="small mb-0">Already have an account? <a href="loginUsers.php">Log in</a></p>
+                    
+                </form>
 
     </body>
 </html>
@@ -174,7 +221,9 @@
                         printf("Error in the query execution\n");
                     exit();
                     }
-                    
+                    echo"<script >
+                    window.location.href=(\"./loginUsers.php\");
+                    </script>";
         }   
         else{
             print("Please, insert all the values");

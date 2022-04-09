@@ -5,81 +5,78 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Job advertisement creation</title>
+    <?php include("./base_header.php"); ?>
+        <main id="main" class="main">
 </head>
+<div class="col-lg-6">
+   <div class="card mb-3">
+       <div class="card-body">
+            <h3 class="card-title">Post your Job Advertisement</h3>
 
-<body>
-   
-        <form action="<?php $_SERVER['PHP_SELF']?>" method="post" enctype="multipart/form-data">
-        <h1>Job Advertisement creation</h1>
+                <form action="<?php $_SERVER['PHP_SELF']?>" method="post" enctype="multipart/form-data">
 
-        <div>
-            <label for="Title"><b>Title</b></label>
-            <br>
-            <input type="text" placeholder="Insert title" name="title" required>
+                    <div class="row mb-3">
+                        <label for="inputText" class="col-sm-2 col-form-label">Title</label>
+                        <input type="text" placeholder="Insert title" class="form-control" name="title" required>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label class="col-sm-5 col-form-label" for="description">Description</label>
+                        <textarea class="form-control" type="text" height="100px" name="description" required></textarea>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label class="col-sm-8 col-form-label" for="jobtType">Required job figure</label>
+                        <br>
+
+                        <?php
+
+                            include("./db_files/connection.php");
+
+                            $tag_list=array();
+
+                            $sql = "SELECT *
+                            FROM $db_tab_tag
+                            ";
+
+                            if (!$result = mysqli_query($mysqliConnection, $sql)) {
+                                printf("Error in query execution\n");
+                            exit();
+                            }
+
+                            while( $row = mysqli_fetch_array($result) ) {
+                            
+                            $tagName = $row['tagName'];
+                            array_push($tag_list,$tagName);}
+
+                            echo"
+                                <select class=\"form-select\" name=\"tag\">";
+                                    foreach($tag_list as $tag):
+                                    echo '<option value="'.$tag.'">'.$tag.'</option>';
+                                    endforeach;
+                                echo"</select>
+                                    ";    
+                            ?>
+                    </div>
+
+
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label" for="location">Location</label>
+                        <input type="text" placeholder="Insert location" class="form-control" name="location" required>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-sm-10">
+                            <button type="submit" class="btn btn-primary" name="enter">Create Job Adv.</button>
+                            <button class="btn btn-primary" type="reset">Reset</button>
+                        </div>
+                    </div>
+
+                </form>
         </div>
+    </div>
+</div>
 
-       
-        <div>
-            <label for="description"><b>Description</b></label>
-            <br>
-            <textarea type="text" rows="9" cols="70" name="description" required></textarea>
-        </div>
-
-        <div>
-            <label for="jobtType"><b>Required job figure</b></label>
-            <br>
-
-            <?php
-
-                include("./db_files/connection.php");
-
-                $tag_list=array();
-
-                $sql = "SELECT *
-                FROM $db_tab_tag
-                ";
-
-                if (!$result = mysqli_query($mysqliConnection, $sql)) {
-                    printf("Error in query execution\n");
-                exit();
-                }
-
-                while( $row = mysqli_fetch_array($result) ) {
-                
-                $tagName = $row['tagName'];
-                array_push($tag_list,$tagName);}
-
-                echo"<div class='box'>
-                    <select name=\"tag\">";
-                        foreach($tag_list as $tag):
-                        echo '<option value="'.$tag.'">'.$tag.'</option>';
-                        endforeach;
-                    echo"</select>
-                        </div>";    
-                ?>
-        </div>
-
-
-        <div>
-            <label for="location"><b>Location</b></label>
-            <br>
-            <textarea type="text" rows="1" cols="70" name="location" required></textarea>
-        </div>
-
-        <div>
-            <button type="submit" name="enter">Create</button>
-            <button type="reset">Reset</button>
-            <button onclick="goBack()">Go back</button>
-        </div>
-
-        </form>
-
-    <script>
-        function goBack() {
-        window.history.back();
-        }
-    </script>
 </body>
 
 </html>
@@ -88,7 +85,6 @@
 
 include("./db_files/connection.php");
 
-session_start();
 
 if (isset($_POST['enter'])){
 
@@ -134,7 +130,16 @@ if (isset($_POST['enter'])){
         //$rowcount3 = mysqli_num_rows($result3);
 
     }
-	
+    
+    $_SESSION['jobType'] = $jobType = $_POST['tag'] ;
+    $_SESSION['tagID'] = $tagID;
+    $_SESSION['postID'] = $postID;
+
+    echo"<script >
+    window.location.href=(\"./suggestions_job_adv.php\");
+    </script>";
 }
 
 ?>
+</main>
+</body>

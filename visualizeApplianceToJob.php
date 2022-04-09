@@ -3,14 +3,65 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your job appliances</title>
     </head>
-    
+    <?php  
+        include("./db_files/connection.php");
+        include("./base_header.php");
+    ?>
     <body>
-        <h1>Your job appliances</h1>
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+            <h1>Your job appliances</h1>
+        </div>
+        
+
+        <aside id="sidebar" class="sidebar">
+                <ul class="sidebar-nav" id="sidebar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="./homepage.php">
+                        <i class="bi bi-grid"></i>
+                        <span>Homepage</span>
+                        </a>
+                    </li>
+                    <?php 
+                    if(isset($_SESSION['type_User'])){    
+                    if($_SESSION['type_User'] == 0){
+                       echo"<li class='nav-item'>
+                                <a class='nav-link collapsed' href='./postCreation.php'>
+                                <i class='bi bi-menu-button-wide'></i>
+                                <span>Post a new Creation</span>
+                                </a>
+                            </li>
+                            <li class='nav-item'>
+                                <a class='nav-link collapsed' href='./visualizeApplianceToJob.php'>
+                                <i class='bi bi-menu-button-wide'></i>
+                                <span>Visualize Appliance to Job Adv.</span>
+                                </a>
+                            </li>";
+                        }
+                    }
+                    ?>
+                    <?php 
+                    if(isset($_SESSION['type_User'])){ 
+                    if($_SESSION['type_User'] == 1){
+                        echo"<li class='nav-item'>
+                                <a class='nav-link collapsed' href='./postJobAdv.php'>
+                                <i class='bi bi-menu-button-wide'></i>
+                                <span>Post a new Job Advertisement</span>
+                                </a>
+                            </li>";
+                        } 
+                    }
+                    ?>
+                </ul>
+            </aside>
 
         <?php
-                include("./db_files/connection.php");
+                /*include("./db_files/connection.php");
 
                 session_start();
                 if(isset($_SESSION['name'])){
@@ -18,7 +69,7 @@
                     $nameToVisualize=$_SESSION['name'];
                     echo"<h4>Here there are your job appliances $nameToVisualize</h4>
                         ";
-                }
+                }*/
                 
                 $sql = "SELECT *
                         FROM $db_tab_application
@@ -55,17 +106,6 @@
                                 $typeOfJob = $row2['type_of_job'];
                                 $locationJob = $row2['location'];
         
-                                echo"<div class='card'>
-                                        <h1 class='titleJob'>$title</h1>
-                                        <form method ='post' action ='./retireApplication.php'>
-                                                <button id='retireApplication' name='retireApplication' value='$jobAdvID'>Retire application</button>
-                                        </form>
-                                        <h3 class='date'>$dateDMY</h3>
-                                        <h3 class='description'>$description</h3>
-                                        <h3 class='jobType'>Required figure: $typeOfJob</h3>
-                                        <h3 class='locationJob'>Job location: $locationJob</h3>
-                                    </div>";
-        
                                 //extract the tagID of the current jobAdv
                                 $sql3 = "SELECT *
                                 FROM $db_tab_association
@@ -96,15 +136,24 @@
                                             while($row4 = mysqli_fetch_array($result4)) {
                                                 $tagName = $row4['tagName'];
     
-                                                echo"<div class='card'>
-                                                <h3class='tag'>$tagName</h3>
-                                                    </div>";
-                                        
                                             }
                                         }
                                     }
                                 }
-
+                                echo"<div class='card'>
+                                        <div class='card-body'>
+                                            <h5 class='card-title'>$title</h5>
+                                            <h6 class='card-text'>Published: $dateDMY</h6>
+                                            <h6 class='card-text'>Required job figure: $typeOfJob</h6>
+                                            <h6 class='card-text'>Location: $locationJob</h6>
+                                            <h6 class='card-text'>Description: $description</h6>
+                                            <h3class='tag'>$tagName</h3>
+                                            <p></p>
+                                            <form method ='post' action ='./retireApplication.php'>
+                                                <button class='btn btn-primary' id='retireApplication' name='retireApplication' value='$jobAdvID'>Retire application</button>
+                                            </form>
+                                        </div>
+                                    </div>";
                             }
                         }
 

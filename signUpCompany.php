@@ -2,11 +2,33 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
     
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Sign up</title>
-        </head>
+<head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Company sign up</title> 
+
+        <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/dropdowns/">
+        <!-- Favicons -->
+        <link href="assets/img/favicon.png" rel="icon">
+        <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+        <!-- Google Fonts -->
+        <link href="https://fonts.gstatic.com" rel="preconnect">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+        <!-- Vendor CSS Files -->
+        <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+        <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+        <link href="assets/vendor/quill/quill.snow.css" rel="stylesheet">
+        <link href="assets/vendor/quill/quill.bubble.css" rel="stylesheet">
+        <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+        <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet">
+
+        <!-- Template Main CSS File -->
+        <link href="assets/css/style.css" rel="stylesheet">
+        <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
+    </head>
         
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
@@ -79,40 +101,62 @@
 
 
     <body>
+
+    <main>
+            <div class="container">
+
+            <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+
+              <div class="d-flex justify-content-center py-4">
+                <a href="index.html" class="logo d-flex align-items-center w-auto">
+                  <span class="d-none d-lg-block">ArtFolio</span>
+                </a>
+              </div><!-- End Logo -->
+
+              <div class="card mb-3">
+
+                <div class="card-body">
+
+                  <div class="pt-4 pb-2">
+                    <h5 class="card-title text-center pb-0 fs-4">Create a Company Account</h5>
+                    <p class="text-center small">Enter your personal details to create account</p>
+                  </div>
+        
         <form method="post">
-                    <h1>Sign Up</h1>
-                    <p>Please fill the fields</p>
                     
                     <div>
-                        <label for="name"><b>Name</b></label>
-                        <input type="text" placeholder="Insert name" name="name" required>
+                        <label for="name" class="form-label"><b>Name</b></label>
+                        <input type="text" class="form-control" placeholder="Insert name" name="name" required>
                     </div>
                     <div id="mail_div">
-                        <label for="email"><b>Email</b></label>
-                        <input type="email" id="email" placeholder="Insert email" name="email"  onchange="checkEmail(this.value);" required>
+                        <label for="email" class="form-label"><b>Email</b></label>
+                        <input type="email" class="form-control" id="email" placeholder="Insert email" name="email"  onchange="checkEmail(this.value);" required>
                     </div>
             
                     <div>
-                        <label for="psw"><b>Password</b></label>
-                        <input id="password" type="password" placeholder="Insert password" name="psw" required>
+                        <label for="psw" class="form-label"><b>Password</b></label>
+                        <input id="password" class="form-control" type="password" placeholder="Insert password" name="psw" required>
                         <!-- An element to toggle between password visibility -->
-                        <input type="checkbox" onclick="password_Visibility()">Show Password
+                        <input type="checkbox" class="form-check-input" onclick="password_Visibility()"> Show Password
                     </div>
 
                     <div id="VAT_div">
-                        <label for="VAT"><b>VAT number</b></label>
-                        <input type="text" id="VAT" placeholder="Insert VAT number" name="VAT" onchange="checkVAT(this.value);" required>
+                        <label for="VAT" class="form-label"><b>VAT number</b></label>
+                        <input type="text" class="form-control" id="VAT" placeholder="Insert VAT number" name="VAT" onchange="checkVAT(this.value);" required>
                     </div>
 
                     <div>
-                        <label for="location"><b>Location</b></label>
-                        <input type="text" placeholder="Insert location" name="location" required>
+                        <label for="location" class="form-label"><b>Location</b></label>
+                        <input type="text" class="form-control" placeholder="Insert location" name="location" required>
                     </div>
                     
                     <div>
-                        <button type="submit" name="enter" id="enter_Button">Sign Up</button>
-                        <button type="reset" >Cancel</button>
-                        <button onclick="goBack()">Go back</button>
+                        <button type="submit" class="btn btn-primary w-100" name="enter" id="enter_Button">Sign Up</button>
+                        <div class="col-12">
+                      <p class="small mb-0">Already have an account? <a href="loginUsers.php">Log in</a></p>
                     </div>
             </form>
     </body>
@@ -143,10 +187,16 @@
                     if (!$result = mysqli_query($mysqliConnection, $sql)) {
                         printf("Error in the query execution\n");
                     exit();
+                    
                     }
+
+                    echo"<script >
+                        window.location.href=(\"./loginUsers.php\");
+                        </script>";
         }   
         else{
             print("Please, insert all the values");
         }
+        
     }
 ?>

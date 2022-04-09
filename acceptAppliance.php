@@ -3,15 +3,25 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 
 <head>
+    <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Accept job appliance and send meeting information</title>
     </head>
+    <?php  
+        include("./db_files/connection.php");
+        include("./base_header.php");
+    ?>
     
     <body>
+        <main id="main" class="main">
+            <div class="col-lg-6">
+                <div class="card mb-3">
+                    <div class="card-body">
         <?php
 
-        include("./db_files/connection.php");
+        //include("./db_files/connection.php");
 
-        session_start();
+        //session_start();
         if(isset($_POST['acceptAppliance'])){
 
             $application_ID = $_POST['acceptAppliance'];
@@ -30,28 +40,30 @@
         
 
         <form action="<?php $_SERVER['PHP_SELF']?>" method="post" enctype="multipart/form-data">
-            <h1>Meeting information</h1>
-            <p>Here you can insert all the meeting information</p>
+            <h3 class="card-title">Meeting information</h3>
+            <p class="card-text">Here you can insert all the meeting information</p>
 
             <input type=hidden name='acceptAppliance' value='<?php echo $application_ID?>'>
             <input type=hidden name='jobID' value='<?php echo $jobAdv_ID?>'>
 
-            <div>
-                <label for="meetingInfo"><b>Meeting information</b></label>
-                <p>Insert here the hour and date of the meeting, or some general information</p>
-                <textarea type="text" rows="9" cols="70" placeholder="Insert meeting information" name="meetingInfo" required></textarea>
+            <div class="row mb-3">
+                <label class="col-sm-6 col-form-label" for="meetingInfo"><b>Meeting information</b></label>
+                <p class="card-text">Insert here the hour and date of the meeting, or some general information</p>
+                <textarea class="form-control" type="text" rows="9" cols="70" placeholder="Insert meeting information" name="meetingInfo" required></textarea>
             </div>
 
-            <div>
-                <label for="linkMeet"><b>Link to image</b></label>
-                <p>Insert here the link for the meeting (Zoom, Google Meet etc.)</p>
-                <textarea type="text" rows="3" cols="70" placeholder="Insert the link for the meet" name="linkMeet" required></textarea>
+            <div class="row mb-3">
+                <label class="col-sm-6 col-form-label" for="linkMeet"><b>Link to image</b></label>
+                <p class="card-text">Insert here the link for the meeting (Zoom, Google Meet etc.)</p>
+                <textarea class="form-control" type="text" rows="3" cols="70" placeholder="Insert the link for the meet" name="linkMeet" required></textarea>
             </div>
 
-            <div>
-                <button type="submit" name="Send">Send</button>
-                <button type="reset">Reset</button>
-                <button onclick="goBack()">Go back</button>
+            <div class="row mb-3">
+                <div class="col-sm-10">
+                    <button class="btn btn-primary" type="submit" name="Send">Send</button>
+                    <button class="btn btn-primary" type="reset">Reset</button>
+                    <button class="btn btn-primary" onclick="goBack()">Go back</button>
+                </div>
             </div>
 
         </form>
@@ -84,10 +96,15 @@
             ";
 
             $result0 = mysqli_query($mysqliConnection,$sql0);
-            header('Location: ./visualizeJobAdvSubmissions.php?jobAdv_ID='.$jobAdv_ID);
+            echo"<script >
+                window.history.go(-2);
+                </script>";
             }
         }
     ?>
-
+                    </div>
+                </div>
+            </div>
+        </main>
     </body>
 </html>
