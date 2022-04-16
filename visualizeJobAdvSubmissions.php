@@ -43,6 +43,12 @@
                                 <i class='bi bi-menu-button-wide'></i>
                                 <span>Visualize Appliance to Job Adv.</span>
                                 </a>
+                            </li>
+                            <li class='nav-item'>
+                                <a class='nav-link collapsed' href='./visualizeMessage.php'>
+                                <i class='bi bi-menu-button-wide'></i>
+                                <span>Visualize messages by company</span>
+                                </a>
                             </li>";
                         }
                     }
@@ -237,7 +243,7 @@
                             }
                         }
                     }else{
-                        echo"<h4>It seems that no creators applied for your job advertisement</h4>";
+                        echo"<h5 class='card-text'>It seems that no creators applied for your job advertisement</h5>";
                     }
                     
                 }
