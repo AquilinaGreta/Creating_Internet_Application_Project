@@ -151,15 +151,39 @@
                         <input class="form-check-input" type="checkbox" onclick="password_Visibility()"> Show Password
                     </div>
 
+
                     <div>
                         <label for="jobFigure"><b>Select the main job figure</b></label>
-                        <select class="form-select" name="jobFigure" id="jobFigure">
-                            <option value="#artist">#artist</option>
-                            <option value="#2D-modeler">#2D-modeler</option>
-                            <option value="#3D-modeler">#3D-modeler</option>
-                           <!-- <option value="#artistModeler">#artist and modeler</option> -->
-                        </select>
-                        
+                        <br>
+
+                        <?php
+
+                            include("./db_files/connection.php");
+
+                            $tag_list=array();
+
+                            $sql = "SELECT *
+                            FROM $db_tab_tag
+                            ";
+
+                            if (!$result = mysqli_query($mysqliConnection, $sql)) {
+                                printf("Error in query execution\n");
+                            exit();
+                            }
+
+                            while( $row = mysqli_fetch_array($result) ) {
+                            
+                            $tagName = $row['tagName'];
+                            array_push($tag_list,$tagName);}
+
+                            echo"
+                                <select class=\"form-select\" name='jobFigure' id='jobFigure'>";
+                                    foreach($tag_list as $tag):
+                                    echo '<option value="'.$tag.'">'.$tag.'</option>';
+                                    endforeach;
+                                echo"</select>
+                                    ";    
+                            ?>
                     </div>
 
                     <div>
