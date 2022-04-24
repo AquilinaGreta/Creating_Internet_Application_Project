@@ -53,7 +53,7 @@
             </div>
 
             <div class="row mb-3">
-                <label class="col-sm-6 col-form-label" for="linkMeet"><b>Link to image</b></label>
+                <label class="col-sm-6 col-form-label" for="linkMeet"><b>Meeting link</b></label>
                 <p class="card-text">Insert here the link for the meeting (Zoom, Google Meet etc.)</p>
                 <textarea class="form-control" type="text" rows="3" cols="70" placeholder="Insert the link for the meet" name="linkMeet" required></textarea>
             </div>

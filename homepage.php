@@ -132,17 +132,53 @@
         <div class="tab-content pt-2">
             <div class="tab-pane fade show active profile-overview" id="profile-overview">
 
-           
-                <form method ="post">
-                    <p></p>
-                    <label for="orderingPost">Order creator's posts by date:</label>
+                <p></p>
+                <label for="orderingPost">Order creator's posts by date:</label>
+                <select name="orderingPost" id="orderingPost" onchange="fetch_order_data_filtered(this)">
+                    <option value="desc">Descending order</option>
+                    <option value="asc">Ascending order</option>
+                </select>
+               
+                <!--AJAX code for filtering creations in desc asc order -->
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+                <script>
                     
-                    <select name="orderingPost" id="orderingPost">
-                        <option value="desc">Descending order</option>
-                        <option value="asc">Ascending order</option>
-                    </select>
-                    <button class='btn btn-primary btn-sm' type="submit" name="enter" id="enter_Button">Order post</button>
-                </form>
+                    function fetch_order_data_filtered(val) {
+                        var your_selected_value = $('#orderingPost option:selected').val();
+
+                            $.ajax({ 
+                                type: "POST", 
+                                url: "./filter_creations.php",
+                                data: {
+                                    orderingPost: your_selected_value
+                                },  
+                                dataType:"json",
+                                beforeSend: function(){
+                                    $('#creation_post').empty();
+                                },
+                                success: function(data){
+                                    
+                                    for(var count=0; count<data.length; count++){
+                                        
+                                    var row = data[count].split("£");
+                                   
+                                    var html_data = '<div class="col-xxl-4 col-xl-12">';
+                                    html_data += '<div class="card info-card customers-card">';
+                                    html_data += '<img class="card-img-bottom" src="'+row[4]+'">';
+                                    html_data += '<div class="card-body"><p></p>';
+                                    html_data += '<a class="card-title" title="Link to user profile" href="visualizeUserProfile.php?Creator_ID='+row[0]+'"><h3>'+row[5]+'</h3></a>';
+                                    html_data += '<h4 class="card-title">'+row[1]+'</h4>';
+                                    html_data += '<p class="card-text">Published: '+row[3]+'</p>';
+                                    html_data += '<p class="card-text">Description: '+row[2]+'</p>';
+                                    html_data += '<p class="card-text">Tag: '+row[6]+'</p>';
+
+                                    $('#creation_post').append(html_data);
+                                    
+                                    }
+                                }
+                            });
+                        }
+                </script>
             
 
                 <?php
@@ -167,24 +203,65 @@
                     <div class='box'>
                     <p></p>
                     <label for='orderingPostTag'>Order creator's posts by tag:</label>
-                    <select name=\"tag\">";
+                    <select  id='orderingPostTag' name=\"tag\"  onchange='fetch_tag_data_filtered(this)'>";
                         foreach($tag_list as $tag):
                         echo '<option value="'.$tag.'">'.$tag.'</option>';
                         endforeach;
                     echo"</select>
-                    <button class='btn btn-primary btn-sm' type='submit' name='orderingPostTag' id='enter_Button'>Order posts</button>
                     </form>
                     <p></p>
                     </div>";   
                     ?>
+
+                <!--AJAX code for filtering creations according to tag -->
+                <script>
+                    
+                    function fetch_tag_data_filtered(val) {
+                        var selected_value = $('#orderingPostTag option:selected').val();
+                        console.log(selected_value);
+                            $.ajax({ 
+                                type: "POST", 
+                                url: "./filter_creations_tag.php",
+                                data: {
+                                    orderingPostTag: selected_value
+                                },  
+                                dataType:"json",
+                                beforeSend: function(){
+                                    $('#creation_post').empty();
+                                },
+                                success: function(data){
+                                    
+                                    for(var count1=0; count1<data.length; count1++){
+                                        
+                                    var row1 = data[count1].split("£");
+                                    //console.log(row1);
+                                   
+                                    var html_data = '<div class="col-xxl-4 col-xl-12">';
+                                    html_data += '<div class="card info-card customers-card">';
+                                    html_data += '<img class="card-img-bottom" src="'+row1[4]+'">';
+                                    html_data += '<div class="card-body"><p></p>';
+                                    html_data += '<a class="card-title" title="Link to user profile" href="visualizeUserProfile.php?Creator_ID='+row1[0]+'"><h3>'+row1[5]+'</h3></a>';
+                                    html_data += '<h4 class="card-title">'+row1[1]+'</h4>';
+                                    html_data += '<p class="card-text">Published: '+row1[3]+'</p>';
+                                    html_data += '<p class="card-text">Description: '+row1[2]+'</p>';
+                                    html_data += '<p class="card-text">Tag: '+row1[6]+'</p>';
+
+                                    $('#creation_post').append(html_data);
+                                    
+                                    }
+                                }
+                            });
+                        }
+                </script>  
                 
                 <div class="row">
                     <div class="col-lg-8">
-                        <div class="row">
+                        <div id="creation_post" class="row">
 
-                            <!-- Creation card in desc ordered by default  -->
+                            <!-- Creation card in desc ordered by default if no filter is selected -->
         
                                     <?php
+                                     
                                         //extract all the post in descending order 
                                         $sql2 = "SELECT *
                                         FROM $db_tab_creations
@@ -268,6 +345,7 @@
                                                 ";
                                             }
                                         }
+                                    
                                     ?>
                         </div><!-- End Creations Card -->
                     </div> 
@@ -276,14 +354,51 @@
 
             <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
 
-                <form method ="post">
-                    <label for="orderingJob">Order companies' posts by date:</label>
-                    <select name="orderingJob" id="orderingJob">
-                        <option value="desc">Descending order</option>
-                        <option value="asc">Ascending order</option>
-                    </select>
-                    <button class='btn btn-primary' type="submit" name="enter" id="enter_Button">Order post</button>
-                </form>
+                <label for="orderingJob">Order companies' posts by date:</label>
+                <select name="orderingJob" id="orderingJob" onchange="fetch_order_job_filtered(this)">
+                    <option value="desc">Descending order</option>
+                    <option value="asc">Ascending order</option>
+                </select>
+               
+                <script>
+                    
+                    function fetch_order_job_filtered(val) {
+                        var your_selected_value = $('#orderingJob option:selected').val();
+                        console.log(your_selected_value);
+                            $.ajax({ 
+                                type: "POST", 
+                                url: "./filter_job.php",
+                                data: {
+                                    orderingJob: your_selected_value
+                                },  
+                                dataType:"json",
+                                beforeSend: function(){
+                                    $('#jobadv_post').empty();
+                                },
+                                success: function(data){
+                                    console.log(data);
+                                    for(var count=0; count<data.length; count++){
+                                        
+                                    var row = data[count].split("£");
+                                    console.log(row);
+                                   
+                                    var html_data = '<div class="col-xxl-4 col-xl-12">';
+                                    html_data += '<div class="card info-card customers-card">';
+                                    html_data += '<div class="card-body"><p></p>';
+                                    html_data += '<a class="card-title" href="visualizeUserProfile.php?Company_ID='+row[0]+'"><h3>'+row[1]+'</h3></a>';
+                                    html_data += '<h4 class="card-title">'+row[2]+'</h4>';
+                                    html_data += '<p class="card-text">Published: '+row[4]+'</p>';
+                                    html_data += '<p class="card-text">Required job figure: '+row[5]+'</p>';
+                                    html_data += '<p class="card-text">Location: '+row[6]+'</p>';
+                                    html_data += '<p class="card-text">Description: '+row[3]+'</p>';
+
+                                    $('#jobadv_post').append(html_data);
+                                    
+                                    }
+                                }
+                            });
+                        }
+                </script>
 
                 <?php
                     $tag_list=array();
@@ -307,23 +422,65 @@
                         <p></p>
                         <div class='box'>
                         <label for='orderingJobTag'>Order companies' posts by job type:</label>
-                        <select name=\"tag\">";
+                        <select name=\"tag\" id='orderingJobTag' onchange='fetch_tag_job_filtered(this)'>";
                             foreach($tag_list as $tag):
                             echo '<option value="'.$tag.'">'.$tag.'</option>';
                             endforeach;
                         echo"</select>
-                        <button class='btn btn-primary' type='submit' name='orderingJobTag' id='enter_Button'>Order posts</button>
                         </form>
                         <p></p>
                         </div>";
                 ?>
+
+                <script>
+                    
+                    function fetch_tag_job_filtered(val) {
+                        var your_selected_value = $('#orderingJobTag option:selected').val();
+                        console.log(your_selected_value);
+                            $.ajax({ 
+                                type: "POST", 
+                                url: "./filter_job_tag.php",
+                                data: {
+                                    orderingJobTab: your_selected_value
+                                },  
+                                dataType:"json",
+                                beforeSend: function(){
+                                    $('#jobadv_post').empty();
+                                },
+                                success: function(data){
+                                    console.log(data);
+                                    for(var count=0; count<data.length; count++){
+                                        
+                                    var row = data[count].split("£");
+                                    console.log(row);
+                                   
+                                    var html_data = '<div class="col-xxl-4 col-xl-12">';
+                                    html_data += '<div class="card info-card customers-card">';
+                                    html_data += '<div class="card-body"><p></p>';
+                                    html_data += '<a class="card-title" href="visualizeUserProfile.php?Company_ID='+row[0]+'"><h3>'+row[1]+'</h3></a>';
+                                    html_data += '<h4 class="card-title">'+row[2]+'</h4>';
+                                    html_data += '<p class="card-text">Published: '+row[4]+'</p>';
+                                    html_data += '<p class="card-text">Required job figure: '+row[5]+'</p>';
+                                    html_data += '<p class="card-text">Location: '+row[6]+'</p>';
+                                    html_data += '<p class="card-text">Description: '+row[3]+'</p>';
+
+                                    $('#jobadv_post').append(html_data);
+                                    
+                                    }
+                                }
+                            });
+                        }
+                </script>
+
+
                 <div class="row">
                     <div class="col-lg-8">
-                        <div class="row">
+                        <div id="jobadv_post" class="row">
 
                             <!-- Creation card in desc ordered by default  -->
         
                                 <?php //extract all the post in descending order 
+                                
                                     $sql2 = "SELECT *
                                     FROM $db_tab_jobAdv
                                     ORDER BY date DESC
@@ -371,6 +528,7 @@
                                                 </div>";
                                         }
                                     } 
+                                
                                 ?>
                         </div><!-- End Creations Card -->
                     </div> 
@@ -378,449 +536,6 @@
             </div>
             </div>
 
-            
-                            
-                                <?php
-
-                                if(isset($_POST['orderingPost']) ){ 
-                                    
-                                    $orderType = $_POST['orderingPost'];
-                                    if($orderType == 'desc'){
-                                        
-                                        //extract all the post in descending order 
-                                        $sql2 = "SELECT *
-                                        FROM $db_tab_creations
-                                        ORDER BY date DESC
-                                        ";
-
-                                        $result2 = mysqli_query($mysqliConnection,$sql2);
-                                        $rowcount2=mysqli_num_rows($result2);
-
-                                        if($rowcount2>0){
-                        
-                                            while($row2 = mysqli_fetch_array($result2)) {
-
-                                                $Creator_ID = $row2['portfolio_ID'];
-                                                $title = $row2['title'];
-                                                $description = $row2['description'];
-                                                $date = $row2['date'];
-                                                $dateDMY = strtotime( $date );
-                                                $dateDMY = date( 'd-m-Y', $dateDMY );
-                                                $Creation_ID = $row2['postID'];
-                                                $external_host_link = mysqli_real_escape_string($mysqliConnection, urldecode($row2['external_host_link']));
-
-                                                $sql31 = "SELECT *
-                                                FROM $db_tab_creator
-                                                WHERE  UserID = $Creator_ID
-                                                ";
-
-                                                $result31 = mysqli_query($mysqliConnection,$sql31);
-                                                $rowcount31 = mysqli_num_rows($result31);
-                                                $row31 = mysqli_fetch_array($result31);
-                                                $usernameCreator = $row31['username'];
-                                               
-                                                //extract the tagID of the current creation
-                                                $sql3 = "SELECT *
-                                                FROM $db_tab_association
-                                                WHERE $db_tab_association.postID = $Creation_ID
-                                                AND type_content = 0
-                                                ";
-                            
-                                                $result3 = mysqli_query($mysqliConnection,$sql3);
-                                                $rowcount3=mysqli_num_rows($result3);
-
-                                                if($rowcount3>0){
-                                
-                                                    while($row3 = mysqli_fetch_array($result3)) {
-                                                        
-                                                        $tagID = $row3['tagID'];
-                                                    
-                                                        //extract tag name for each tagID
-                                                        $sql4 = "SELECT *
-                                                        FROM $db_tab_tag
-                                                        WHERE tagID =  $tagID
-                                                        ";
-                                    
-                                                        $result4 = mysqli_query($mysqliConnection,$sql4);
-                                                        $rowcount4=mysqli_num_rows($result4);
-                                    
-                                                        if($rowcount4>0){
-            
-                                                            while($row4 = mysqli_fetch_array($result4)) {
-                                                                $tagName = $row4['tagName'];
-                                                               
-                                                            }
-                                                        }
-                                                    }
-                                                }  
-                                                echo"
-                                               
-                                                <div class='card'>
-                                                <a class='link_userprofile' title='Link to user's profile' href='visualizeUserProfile.php?Creator_ID=".$Creator_ID."'><h1 class='usernameCreator'>$usernameCreator</h1></a>
-                                                    <h1 class='title'>$title</h1>
-                                                    <h3 class='date'>$dateDMY</h3>
-                                                    <h3 class='description'>$description</h3>
-                                                    <img class='creaIMG' src='".$external_host_link."' height='500' width='500'>
-                                                    <h3 class='tag'>$tagName</h3>
-                                                </div>
-                                                
-                                                ";
-                                            }
-                                        }
-
-                                    }else{
-                                        //extract all the post in descending order 
-                                        $sql2 = "SELECT *
-                                        FROM $db_tab_creations
-                                        ORDER BY date ASC
-                                        ";
-
-                                        $result2 = mysqli_query($mysqliConnection,$sql2);
-                                        $rowcount2=mysqli_num_rows($result2);
-
-                                        if($rowcount2>0){
-                        
-                                            while($row2 = mysqli_fetch_array($result2)) {
-
-                                                $Creator_ID = $row2['portfolio_ID'];
-                                                $title = $row2['title'];
-                                                $description = $row2['description'];
-                                                $date = $row2['date'];
-                                                $dateDMY = strtotime( $date );
-                                                $dateDMY = date( 'd-m-Y', $dateDMY );
-                                                $Creation_ID = $row2['postID'];
-                                                $external_host_link = mysqli_real_escape_string($mysqliConnection, urldecode($row2['external_host_link']));
-
-                                                $sql31 = "SELECT *
-                                                FROM $db_tab_creator
-                                                WHERE  UserID = $Creator_ID
-                                                ";
-
-                                                $result31 = mysqli_query($mysqliConnection,$sql31);
-                                                $rowcount31 = mysqli_num_rows($result31);
-                                                $row31 = mysqli_fetch_array($result31);
-                                                $usernameCreator = $row31['username'];
-                                               
-                                                //extract the tagID of the current creation
-                                                $sql3 = "SELECT *
-                                                FROM $db_tab_association
-                                                WHERE $db_tab_association.postID = $Creation_ID
-                                                AND type_content = 0
-                                                ";
-                            
-                                                $result3 = mysqli_query($mysqliConnection,$sql3);
-                                                $rowcount3=mysqli_num_rows($result3);
-
-                                                if($rowcount3>0){
-                                
-                                                    while($row3 = mysqli_fetch_array($result3)) {
-                                                        
-                                                        $tagID = $row3['tagID'];
-                                                    
-                                                        //extract tag name for each tagID
-                                                        $sql4 = "SELECT *
-                                                        FROM $db_tab_tag
-                                                        WHERE tagID =  $tagID
-                                                        ";
-                                    
-                                                        $result4 = mysqli_query($mysqliConnection,$sql4);
-                                                        $rowcount4=mysqli_num_rows($result4);
-                                    
-                                                        if($rowcount4>0){
-            
-                                                            while($row4 = mysqli_fetch_array($result4)) {
-                                                                $tagName = $row4['tagName'];
-                                                               
-                                                            }
-                                                        }
-                                                    }
-                                                }  
-                                                echo"
-                                                <div class='card'>
-                                                <a class='link_userprofile' title='Link to user's profile' href='visualizeUserProfile.php?Creator_ID=".$Creator_ID."'><h1 class='usernameCreator'>$usernameCreator</h1></a>
-                                                    <h1 class='title'>$title</h1>
-                                                    <h3 class='date'>$dateDMY</h3>
-                                                    <h3 class='description'>$description</h3>
-                                                    <img class='creaIMG' src='".$external_host_link."' height='500' width='500'>
-                                                    <h3 class='tag'>$tagName</h3>
-                                                </div>
-                                                ";
-                                            }
-                                        }
-                                    }
-
-                                }
-
-                                
-
-                                        if(isset($_POST['orderingPostTag'])){
-                                            
-                                            $tag = $_POST['tag'];
-
-                                            $sql4 = "SELECT *
-                                            FROM $db_tab_tag
-                                            WHERE tagName = '$tag'
-                                            ";
-                                            
-                                            $result4 = mysqli_query($mysqliConnection,$sql4);
-                                            $rowcount4 = mysqli_num_rows($result4);
-                                                        
-                                            if($rowcount4>0){
-                                               
-                                                $row4 = mysqli_fetch_array($result4);
-                                                $tagID = $row4['tagID'];
-                                                
-                                                $sql5 = "SELECT *
-                                                FROM $db_tab_association
-                                                WHERE tagID = $tagID
-                                                AND type_content = 0
-                                                ";
-
-                                            $result5 = mysqli_query($mysqliConnection,$sql5);
-                                            $rowcount5 = mysqli_num_rows($result5);
-                                           
-                                            if($rowcount5>0){
-
-                                                    while( $row5 = mysqli_fetch_array($result5) ) {
-                                                       
-                                                        $postID = $row5['postID'];
-                                                        //extract all the post in descending order 
-                                                        $sql2 = "SELECT *
-                                                        FROM $db_tab_creations
-                                                        WHERE postID = $postID
-                                                        ORDER BY date DESC
-                                                        ";
-                                                        
-                                                        $result2 = mysqli_query($mysqliConnection,$sql2);
-                                                        $rowcount2=mysqli_num_rows($result2);
-                                                        
-                                                        if($rowcount2>0){
-                        
-                                                            while($row2 = mysqli_fetch_array($result2)) {
-                
-                                                                $Creator_ID = $row2['portfolio_ID'];
-                                                                $title = $row2['title'];
-                                                                $description = $row2['description'];
-                                                                $date = $row2['date'];
-                                                                $dateDMY = strtotime( $date );
-                                                                $dateDMY = date( 'd-m-Y', $dateDMY );
-                                                                $Creation_ID = $row2['postID'];
-                                                                $external_host_link = mysqli_real_escape_string($mysqliConnection, urldecode($row2['external_host_link']));
-                
-                                                                $sql31 = "SELECT *
-                                                                FROM $db_tab_creator
-                                                                WHERE  UserID = $Creator_ID
-                                                                ";
-                
-                                                                $result31 = mysqli_query($mysqliConnection,$sql31);
-                                                                $rowcount31 = mysqli_num_rows($result31);
-                                                                $row31 = mysqli_fetch_array($result31);
-                                                                $usernameCreator = $row31['username'];
-                                                               
-                                                                //extract the tagID of the current creation
-                                                                $sql3 = "SELECT *
-                                                                FROM $db_tab_association
-                                                                WHERE $db_tab_association.postID = $Creation_ID
-                                                                AND type_content = 0
-                                                                ";
-                                            
-                                                                $result3 = mysqli_query($mysqliConnection,$sql3);
-                                                                $rowcount3=mysqli_num_rows($result3);
-                
-                                                                if($rowcount3>0){
-                                                
-                                                                    while($row3 = mysqli_fetch_array($result3)) {
-                                                                        
-                                                                        $tagID = $row3['tagID'];
-                                                                    
-                                                                        //extract tag name for each tagID
-                                                                        $sql4 = "SELECT *
-                                                                        FROM $db_tab_tag
-                                                                        WHERE tagID =  $tagID
-                                                                        ";
-                                                    
-                                                                        $result4 = mysqli_query($mysqliConnection,$sql4);
-                                                                        $rowcount4=mysqli_num_rows($result4);
-                                                    
-                                                                        if($rowcount4>0){
-                            
-                                                                            while($row4 = mysqli_fetch_array($result4)) {
-                                                                                $tagName = $row4['tagName'];
-                                                                               
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                }  
-                                                                echo"<div class='card'>
-                                                                <a class='link_userprofile' title='Link to user's profile' href='visualizeUserProfile.php?Creator_ID=".$Creator_ID."'><h1 class='usernameCreator'>$usernameCreator</h1></a>
-                                                                    <h1 class='title'>$title</h1>
-                                                                    <h3 class='date'>$dateDMY</h3>
-                                                                    <h3 class='description'>$description</h3>
-                                                                    <img class='creaIMG' src='".$external_host_link."' height='500' width='500'>
-                                                                    <h3 class='tag'>$tagName</h3>
-                                                                </div>";
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                ?>
-
-                                
-                                <?php
-                                //companies post visualization and selection
-
-                                if(isset($_POST['orderingJob']) ){ 
-                                    
-                                    $orderType = $_POST['orderingJob'];
-                                    if($orderType == 'desc'){
-                                        
-                                        //extract all the post in descending order 
-                                        $sql2 = "SELECT *
-                                        FROM $db_tab_jobAdv
-                                        ORDER BY date DESC
-                                        ";
-
-                                        $result2 = mysqli_query($mysqliConnection,$sql2);
-                                        $rowcount2=mysqli_num_rows($result2);
-
-                                        if($rowcount2>0){
-                        
-                                            while($row2 = mysqli_fetch_array($result2)) {
-
-                                                $company_ID = $row2['company_ID'];
-                                                $title = $row2['title'];
-                                                $description = $row2['description'];
-                                                $date = $row2['date'];
-                                                $dateDMY = strtotime( $date );
-                                                $dateDMY = date( 'd-m-Y', $dateDMY );
-                                                $jobAdv_ID = $row2['postID'];
-                                                $type_job = $row2['type_of_job'];
-                                                $location = $row2['location'];
-
-                                                $sql31 = "SELECT *
-                                                FROM $db_tab_company
-                                                WHERE  UserID = $company_ID
-                                                ";
-
-                                                $result31 = mysqli_query($mysqliConnection,$sql31);
-                                                $rowcount31 = mysqli_num_rows($result31);
-                                                $row31 = mysqli_fetch_array($result31);
-                                                $companyName = $row31['name'];
-                                               
-                                                echo"<div class='card'>
-                                                <a class='link_userprofile' title='Link to user's profile' href='visualizeUserProfile.php?Company_ID=".$company_ID."'><h1 class='usernameCreator'>$companyName</h1></a>
-                                                    <h1 class='title'>$title</h1>
-                                                    <h3 class='date'>$dateDMY</h3>
-                                                    <h3 class='description'>$description</h3>
-                                                    <h3 class='typeJob'>$type_job</h3>
-                                                    <h3 class='location'>$location</h3>
-                                                </div>";
-                                            }
-                                        }
-                                    
-                                    }else{
-                                        //extract all the post in descending order 
-                                        $sql2 = "SELECT *
-                                        FROM $db_tab_jobAdv
-                                        ORDER BY date ASC
-                                        ";
-
-                                        $result2 = mysqli_query($mysqliConnection,$sql2);
-                                        $rowcount2=mysqli_num_rows($result2);
-
-                                        if($rowcount2>0){
-                        
-                                            while($row2 = mysqli_fetch_array($result2)) {
-
-                                                $company_ID = $row2['company_ID'];
-                                                $title = $row2['title'];
-                                                $description = $row2['description'];
-                                                $date = $row2['date'];
-                                                $dateDMY = strtotime( $date );
-                                                $dateDMY = date( 'd-m-Y', $dateDMY );
-                                                $jobAdv_ID = $row2['postID'];
-                                                $type_job = $row2['type_of_job'];
-                                                $location = $row2['location'];
-
-                                                $sql31 = "SELECT *
-                                                FROM $db_tab_company
-                                                WHERE  UserID = $company_ID
-                                                ";
-
-                                                $result31 = mysqli_query($mysqliConnection,$sql31);
-                                                $rowcount31 = mysqli_num_rows($result31);
-                                                $row31 = mysqli_fetch_array($result31);
-                                                $companyName = $row31['name'];
-                                               
-                                                echo"<div class='card'>
-                                                <a class='link_userprofile' title='Link to user's profile' href='visualizeUserProfile.php?Company_ID=".$company_ID."'><h1 class='usernameCreator'>$companyName</h1></a>
-                                                    <h1 class='title'>$title</h1>
-                                                    <h3 class='date'>$dateDMY</h3>
-                                                    <h3 class='description'>$description</h3>
-                                                    <h3 class='typeJob'>$type_job</h3>
-                                                    <h3 class='location'>$location</h3>
-                                                </div>";
-                                            }
-                                        }
-                                    }
-                                }  
-
-                                        if(isset($_POST['orderingJobTag'])){
-                                            
-                                            $tagName = $_POST['tag'];
-
-                                            //extract all the post in descending order 
-                                        $sql2 = "SELECT *
-                                        FROM $db_tab_jobAdv
-                                        WHERE type_of_job = '$tagName'
-                                        ORDER BY date DESC
-                                        ";
-
-                                        $result2 = mysqli_query($mysqliConnection,$sql2);
-                                        $rowcount2=mysqli_num_rows($result2);
-
-                                        if($rowcount2>0){
-                        
-                                            while($row2 = mysqli_fetch_array($result2)) {
-
-                                                $company_ID = $row2['company_ID'];
-                                                $title = $row2['title'];
-                                                $description = $row2['description'];
-                                                $date = $row2['date'];
-                                                $dateDMY = strtotime( $date );
-                                                $dateDMY = date( 'd-m-Y', $dateDMY );
-                                                $jobAdv_ID = $row2['postID'];
-                                                $type_job = $row2['type_of_job'];
-                                                $location = $row2['location'];
-
-                                                $sql31 = "SELECT *
-                                                FROM $db_tab_company
-                                                WHERE  UserID = $company_ID
-                                                ";
-
-                                                $result31 = mysqli_query($mysqliConnection,$sql31);
-                                                $rowcount31 = mysqli_num_rows($result31);
-                                                $row31 = mysqli_fetch_array($result31);
-                                                $companyName = $row31['name'];
-                                               
-                                                echo"<div class='card'>
-                                                <a class='link_userprofile' title='Link to user's profile' href='visualizeUserProfile.php?Company_ID=".$company_ID."'><h1 class='usernameCreator'>$companyName</h1></a>
-                                                    <h1 class='title'>$title</h1>
-                                                    <h3 class='date'>$dateDMY</h3>
-                                                    <h3 class='description'>$description</h3>
-                                                    <h3 class='typeJob'>$type_job</h3>
-                                                    <h3 class='location'>$location</h3>
-                                                </div>";
-                                            }
-                                        }
-                                    }
-
-                                ?>
-
-                            
-                        
 
                             </div>
                         </div>
