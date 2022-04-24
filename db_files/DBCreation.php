@@ -184,6 +184,22 @@
             exit();
             }
 
+            $sqlQuery10 = "INSERT INTO $db_tab_tag (tagName)
+                            VALUES  ('#artist')
+                                    ";
+            $result = mysqli_query($mysqliConnection, $sqlQuery10);
+           
+            $sqlQuery11 = "INSERT INTO $db_tab_tag (tagName)
+                            VALUES  ('#3D-modeler')
+                                    ";
+            $result = mysqli_query($mysqliConnection, $sqlQuery11);
+
+            $sqlQuery12 = "INSERT INTO $db_tab_tag (tagName)
+            VALUES  ('#2D-modeler')
+                    ";
+            $result = mysqli_query($mysqliConnection, $sqlQuery12);
+
+
             mysqli_close($mysqliConnection);
             exit;
 
