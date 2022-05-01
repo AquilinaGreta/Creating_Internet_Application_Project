@@ -42,7 +42,7 @@ if(isset($_POST['insertCandidate'])){
             </div>
 
             <div class="row mb-3">
-                <label for="linkMeet" class="col-sm-6 col-form-label"><b>Link to image</b></label>
+                <label for="linkMeet" class="col-sm-6 col-form-label"><b>Meeting link</b></label>
                 <p class="card-text">Insert here the link for the meeting (Zoom, Google Meet etc.)</p>
                 <textarea class="form-control" type="text" rows="3" cols="70" placeholder="Insert the link for the meet" name="linkMeet" required></textarea>
             </div>

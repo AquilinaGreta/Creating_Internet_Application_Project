@@ -17,29 +17,11 @@
     <div class="pagetitle">
         <h1>Your profile</h1>
     </div>
-        <!--Superior bar with tools like signup login search so on-->
-        <!--<div class="navigation bar">
-            <ul class="navigation">
-                <li><a id="home" title="home" href="./homepage.php">Homepage</a></li>
-                <li><a id="search" href="./search.php">Search</a></li>-->
+       
             <?php
                 include("./db_files/connection.php");
-                include("./base_header.php");
-
-                //session_start();
-                /*if(isset($_SESSION['name']) && $_SESSION['type_User']==1){
-
-                    $nameToVisualize=$_SESSION['name'];
-                    
-                }
-                else{
-                    /*echo"<li> <a id='sign-up' title='Sign-up' href='./userSelectionSignup.php'>Sign-up</a></li>
-                    <li> <a id='login' title='log-in' href='./loginUsers.php'>Log-in</a></li>
-                    ";
-                }*/
+                include("./base_header.php");               
             ?>
-        <!--    </ul>
-        </div> -->
 
     <aside id="sidebar" class="sidebar">
         <ul class="sidebar-nav" id="sidebar-nav">
@@ -65,7 +47,7 @@
                 <div class="card">
                     <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
-                        <!--<img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">-->
+                       
                         <h2>
                             <?php
                                 if(isset($_SESSION['name']) && $_SESSION['type_User']==1){
@@ -98,19 +80,13 @@
                                     ?>
                                 </div>
                             </div>
-                        <div class="social-links mt-2">
-                            <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
-                            <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
-                            <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
-                            <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
-                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+       
 
         <div class="col-xl-8">
-            
+        <div class="portfolio">
         <h2>Your Job Advertisements</h2>
             <?php
                 if(isset($_SESSION['name']) && $_SESSION['type_User']==1){
@@ -167,8 +143,8 @@
                         }
                     }
                 ?>
-                
-                
+                </div>
+                </div>
                 </div>
             </section>
         </main>

@@ -164,6 +164,10 @@
                         }
 
                     }
+                }else{
+                    echo"
+                    <h5 class='card-text'>It seems that there are no job appliances</h5>
+                    ";
                 }
 
             ?>

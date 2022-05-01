@@ -112,18 +112,23 @@
 
                         $result4 = mysqli_query($mysqliConnection,$sql4);
                         $rowcount4=mysqli_num_rows($result4);
-                        $row4 = mysqli_fetch_array($result4);
 
-                        $messageText = $row4['message_text'];
-                        $messageLink = mysqli_real_escape_string($mysqliConnection, urldecode($row4['meeting_link']));
+                        if($rowcount4>0){
 
-                        echo"<div class='card'>
-                                <div class='card-body'>
-                                    <h5 class='card-title'>Message from: $companyName </h5>
-                                    <h6 class='card-text'>Message text: $messageText</h6>
-                                    <h6 class='card-text'>Message link: $messageLink</h6>
-                                </div>
-                            </div>";
+                            while($row4 = mysqli_fetch_array($result4)) {
+
+                                $messageText = $row4['message_text'];
+                                $messageLink = mysqli_real_escape_string($mysqliConnection, urldecode($row4['meeting_link']));
+
+                                echo"<div class='card'>
+                                        <div class='card-body'>
+                                            <h5 class='card-title'>Message from: $companyName </h5>
+                                            <h6 class='card-text'>Message text: $messageText</h6>
+                                            <h6 class='card-text'>Message link: $messageLink</h6>
+                                        </div>
+                                    </div>";
+                            }
+                        }
                     }
                 }else{
                     echo"

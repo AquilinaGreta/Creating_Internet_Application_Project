@@ -184,6 +184,7 @@
             exit();
             }
 
+            //insert tag
             $sqlQuery10 = "INSERT INTO $db_tab_tag (tagName)
                             VALUES  ('#artist')
                                     ";
@@ -198,6 +199,141 @@
             VALUES  ('#2D-modeler')
                     ";
             $result = mysqli_query($mysqliConnection, $sqlQuery12);
+
+            //insert a creator with 3 post
+            $hashed_Pass = password_hash("creator0", PASSWORD_DEFAULT);
+
+            $sqlQuery = "INSERT INTO $db_tab_creator (name,email,username,password,jobFigure,tools)
+            VALUES   
+            ('creator0', 'creator0@mail.com', 'creator0', \"$hashed_Pass\", '#artist', 'Photoshop')";
+
+            if (mysqli_query($mysqliConnection, $sqlQuery)) {
+
+                $userID = mysqli_insert_id($mysqliConnection);
+
+            }
+
+            $sql2 = "INSERT INTO $db_tab_portfolio 
+            (creator_ID)
+            VALUES
+            (\"$userID\")";
+
+            $result = mysqli_query($mysqliConnection, $sql2);
+
+
+            $dateCreation = date("Y-m-d");
+            $concat_Link = "https://i.imgur.com/7c041xX.jpg";
+            $external_host_link = mysqli_real_escape_string($mysqliConnection, urlencode($concat_Link));
+            $tag = "#artist";
+
+            $sql = "INSERT INTO $db_tab_creations (title, description, date, portfolio_ID, external_host_link)
+            VALUES
+            ('Creation: artist', 'description', '$dateCreation', '$userID', '$external_host_link')
+            ";
+
+            if (mysqli_query($mysqliConnection, $sql)) {
+
+                $postID = mysqli_insert_id($mysqliConnection);
+
+            }
+
+            $sql2 = "SELECT *
+            FROM $db_tab_tag
+            WHERE tagName = '$tag'
+            ";
+            
+            $result2 = mysqli_query($mysqliConnection,$sql2);
+            $rowcount2 = mysqli_num_rows($result2);
+                        
+            if($rowcount2>0){
+
+                $row2 = mysqli_fetch_array($result2);
+                $tagID = $row2['tagID'];
+                
+                $sql3 = "INSERT INTO $db_tab_association (postID, tagID, type_content) 
+                VALUES 
+                ('$postID', '$tagID', 0)
+                ";
+
+                $result3 = mysqli_query($mysqliConnection,$sql3);
+
+            }
+
+            $dateCreation1 = date("Y-m-d");
+            $concat_Link1 = "https://i.imgur.com/6ZPtzf4.jpg";
+            $external_host_link1 = mysqli_real_escape_string($mysqliConnection, urlencode($concat_Link1));
+            $tag1 = "#2D-modeler";
+
+            $sql = "INSERT INTO $db_tab_creations (title, description, date, portfolio_ID, external_host_link)
+            VALUES
+            ('Creation: 2D-modeling', 'a 2D description', '$dateCreation1', '$userID', '$external_host_link1')
+            ";
+
+            if (mysqli_query($mysqliConnection, $sql)) {
+
+                $postID1 = mysqli_insert_id($mysqliConnection);
+
+            }
+
+            $sql2 = "SELECT *
+            FROM $db_tab_tag
+            WHERE tagName = '$tag1'
+            ";
+            
+            $result2 = mysqli_query($mysqliConnection,$sql2);
+            $rowcount2 = mysqli_num_rows($result2);
+                        
+            if($rowcount2>0){
+
+                $row2 = mysqli_fetch_array($result2);
+                $tagID = $row2['tagID'];
+                
+                $sql3 = "INSERT INTO $db_tab_association (postID, tagID, type_content) 
+                VALUES 
+                ('$postID1', '$tagID', 0)
+                ";
+
+                $result3 = mysqli_query($mysqliConnection,$sql3);
+
+            }
+
+            $dateCreation2 = date("Y-m-d");
+            $concat_Link2 = "https://i.imgur.com/1pcsx0d.jpg";
+            $external_host_link2 = mysqli_real_escape_string($mysqliConnection, urlencode($concat_Link2));
+            $tag2 = "#3D-modeler";
+
+            $sql = "INSERT INTO $db_tab_creations (title, description, date, portfolio_ID, external_host_link)
+            VALUES
+            ('Creation: 3D-modeling', 'a 3D description', '$dateCreation2', '$userID', '$external_host_link2')
+            ";
+
+            if (mysqli_query($mysqliConnection, $sql)) {
+
+                $postID2 = mysqli_insert_id($mysqliConnection);
+
+            }
+
+            $sql2 = "SELECT *
+            FROM $db_tab_tag
+            WHERE tagName = '$tag2'
+            ";
+            
+            $result2 = mysqli_query($mysqliConnection,$sql2);
+            $rowcount2 = mysqli_num_rows($result2);
+                        
+            if($rowcount2>0){
+
+                $row2 = mysqli_fetch_array($result2);
+                $tagID = $row2['tagID'];
+                
+                $sql3 = "INSERT INTO $db_tab_association (postID, tagID, type_content) 
+                VALUES 
+                ('$postID2', '$tagID', 0)
+                ";
+
+                $result3 = mysqli_query($mysqliConnection,$sql3);
+
+            }
 
 
             mysqli_close($mysqliConnection);
