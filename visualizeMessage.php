@@ -124,7 +124,7 @@
                                         <div class='card-body'>
                                             <h5 class='card-title'>Message from: $companyName </h5>
                                             <h6 class='card-text'>Message text: $messageText</h6>
-                                            <h6 class='card-text'>Message link: $messageLink</h6>
+                                            <h6 class='card-text'>Message link: <a href='$messageLink'> $messageLink </a></h6>
                                         </div>
                                     </div>";
                             }
